@@ -33,6 +33,9 @@ int CosmDatastream::updateValue(Stream& aStream)
   case DATASTREAM_FLOAT:
     _value._valueFloat = aStream.parseFloat();
     break;
+  case DATASTREAM_LONG:
+    _value._valueLong = aStream.parseInt();
+    break;
   case DATASTREAM_BUFFER:
     {
       int len = aStream.readBytesUntil('\n', _value._valueBuffer._buffer, _value._valueBuffer._bufferSize);
@@ -59,6 +62,7 @@ int CosmDatastream::timedRead(Stream& aStream)
   long _startMillis = millis();
   do {
     c = aStream.read();
+    //Serial.print(c);
     if (c >= 0) return c;
   } while(millis() - _startMillis < 10000UL);
   return -1;     // -1 indicates timeout
@@ -70,6 +74,13 @@ void CosmDatastream::setInt(int aValue)
   if (_valueType == DATASTREAM_INT)
   {
     _value._valueInt = aValue;
+  }
+}
+void CosmDatastream::setLong(long aValue)
+{
+  if (_valueType == DATASTREAM_LONG)
+  {
+    _value._valueLong = aValue;
   }
 }
 
@@ -102,6 +113,17 @@ int CosmDatastream::getInt()
   if (_valueType == DATASTREAM_INT)
   {
     return _value._valueInt;
+  }
+  else
+  {
+    return 0;
+  }
+}
+long CosmDatastream::getLong()
+{
+  if (_valueType == DATASTREAM_LONG)
+  {
+    return _value._valueLong;
   }
   else
   {
@@ -161,6 +183,9 @@ size_t CosmDatastream::printTo(Print& aPrint) const
     break;
   case DATASTREAM_INT:
     count += aPrint.print(_value._valueInt);
+    break;
+  case DATASTREAM_LONG:
+    count += aPrint.print(_value._valueLong);
     break;
   case DATASTREAM_FLOAT:
     count += aPrint.print(_value._valueFloat);

@@ -8,6 +8,7 @@
 #define DATASTREAM_BUFFER 1
 #define DATASTREAM_INT 2
 #define DATASTREAM_FLOAT 3
+#define DATASTREAM_LONG 4
 
 class CosmDatastream : public Printable {
   friend class CosmClient;
@@ -23,12 +24,14 @@ public:
   CosmDatastream(char* aIdBuffer, int aIdBufferLength, int aType, char* aValueBuffer, int aValueBufferLength);
   int updateValue(Stream& aStream);
   void setInt(int aValue);
+  void setLong(long aValue);
   void setFloat(float aValue);
   void setString(String& aValue);
   void setBuffer(const char* aValue);
   String& getString();
   int getInt();
   float getFloat();
+  long getLong();
   char* getBuffer();
   virtual size_t printTo(Print&) const;
 protected:
@@ -46,6 +49,7 @@ protected:
     tBuffer _valueBuffer;
     int _valueInt;
     float _valueFloat;
+    long _valueLong;
   } _value;
 };
 

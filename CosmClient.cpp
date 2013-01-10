@@ -111,6 +111,7 @@ int CosmClient::get(CosmFeed& aFeed, const char* aApiKey)
         if (http.available())
         {
           char next = http.read();
+          //Serial.print(next);
           switch (next)
           {
           case ',':
